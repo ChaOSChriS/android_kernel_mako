@@ -90,20 +90,12 @@ echo "[BUILD]: copy flashing tools to output";
 
 cp -R $SD/ChaOS/tools/* $SD/out/$CODENAME
 cd $SD/out/$CODENAME/
-if [ "$2" = "linaro" ]; then
+
  #create zip and clean folder
-    echo "[BUILD]: Creating zip: ChaOS_"$CODENAME"_"$DATE"_"$BRANCH"-"$REV"-"$2".zip ...";
-    zip -r ChaOS_"$CODENAME"_"$DATE"_"$REV"-"$2".zip . -x "*.zip" "*.sha1" "*.md5"
-echo "[BUILD]: Creating changelog: ChaOS_"$CODENAME"_"$DATE"_"$REV"-"$2".txt ...";
+    echo "[BUILD]: Creating zip: ChaOS_MiRaGe_"$CODENAME"_"$DATE"_"$BRANCH"-"$REV"-"$2".zip ...";
+    zip -r ChaOS_MiRaGe_"$CODENAME"_"$DATE"_"$REV"-"$2".zip . -x "*.zip" "*.sha1" "*.md5"
+echo "[BUILD]: Creating changelog: ChaOS_MiRaGe_"$CODENAME"_"$DATE"_"$REV"-"$2".txt ...";
 cd $SD
-git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/ChaOS_"$CODENAME"_"$DATE"_"$REV"-"$2".txt
+git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/ChaOS_MiRaGe_"$CODENAME"_"$DATE"_"$REV"-"$2".txt
     echo "[BUILD]: Done!...";
-else
- #create zip and clean folder
-    echo "[BUILD]: Creating zip: ChaOS_"$CODENAME"_"$DATE"_"$BRANCH"-"$REV".zip ...";
-    zip -r ChaOS_"$CODENAME"_"$DATE"_"$BRANCH"-"$REV".zip . -x "*.zip" "*.sha1" "*.md5"
-echo "[BUILD]: Creating changelog: ChaOS_"$CODENAME"_"$DATE"_"$BRANCH"-"$REV".txt ...";
-cd $SD
-git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/ChaOS_"$CODENAME"_"$DATE"_"$REV".txt
-    echo "[BUILD]: Done!...";
-fi
+
