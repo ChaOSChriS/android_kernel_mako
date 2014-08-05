@@ -1,5 +1,8 @@
 #updater-script by ChaOS(Christian Z.) 2014
 #v1.01 - www.chaosdevelopment.tk | www.github.com/chaoschris
+ui_print(" ------MiRaGe-ChaOS------);
+ui_print("                                                   );
+ui_print("                                                   );
 
 ui_print(" Checking device...");
 assert(getprop("ro.product.device") == "mako" || getprop("ro.build.product") == "mako" || getprop("ro.product.board") == "MAKO");
