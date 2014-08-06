@@ -119,7 +119,7 @@ cd $SD/out/$CODENAME/
  #create zip and clean folder
     echo "[BUILD]: Creating zip: MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE".zip ...";
     zip -r MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE"_"$DATEE".zip . -x "*.zip" "*.sha1" "*.md5"
-echo "[BUILD]: Creating changelog: MiRaGe_any_"$CODENAME"_$VERSION"_"$DATE".txt ...";
+echo "[BUILD]: Creating changelog: MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE".txt ...";
 cd $SD
 git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE"_"$DATEE".txt
     echo "[BUILD]: Done!...";
