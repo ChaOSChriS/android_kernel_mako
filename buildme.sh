@@ -15,7 +15,7 @@ $TOOLCHAIN/arm-cortex_a15-linux-gnueabihf-gcc --version;
 REV=$(git log --pretty=format:'%h' -n 1)
 echo "[BUILD]: Saved current hash as revision: $REV...";
 #date of build
-DATE=$(date +%Y%m%d_%H%M%S)
+DATE=$(date +%Y%m%d)
 echo "[BUILD]: Start of build: $DATE...";
 
 #build the kernel
@@ -24,8 +24,8 @@ make mrproper
 echo "[BUILD]: Using defconfig: $DEFCONFIG...";
 #make $DEFCONFIG
 cp $SD/arch/arm/configs/mako_config $SD/.config
-echo "[BUILD]: Changing CONFIG_LOCALVERSION to: -ChaOS-MiRaGe_"$CODENAME" ...";
-sed -i "/CONFIG_LOCALVERSION=\"/c\CONFIG_LOCALVERSION=\"-ChaOS-MiRaGe_"$CODENAME"\"" .config
+echo "[BUILD]: Changing CONFIG_LOCALVERSION to: -MiRaGe_any...";
+sed -i "/CONFIG_LOCALVERSION=\"/c\CONFIG_LOCALVERSION=\"-MiRaGe_any\"" .config
 
 ###CCACHE CONFIGURATION STARTS HERE, DO NOT MESS WITH IT!!!
 TOOLCHAIN_CCACHE="$TOOLCHAIN/../bin-ccache"
@@ -92,10 +92,10 @@ cp -R $SD/ChaOS/tools/* $SD/out/$CODENAME
 cd $SD/out/$CODENAME/
 
  #create zip and clean folder
-    echo "[BUILD]: Creating zip: ChaOS_MiRaGe_"$CODENAME"_"$DATE"_"$BRANCH"-"$REV"-"$2".zip ...";
-    zip -r ChaOS_MiRaGe_"$CODENAME"_"$DATE"_"$REV"-"$2".zip . -x "*.zip" "*.sha1" "*.md5"
-echo "[BUILD]: Creating changelog: ChaOS_MiRaGe_"$CODENAME"_"$DATE"_"$REV"-"$2".txt ...";
+    echo "[BUILD]: Creating zip: MiRaGe_any_"$CODENAME"_KTU_"$DATE".zip ...";
+    zip -r MiRaGe_any_"$CODENAME"_KTU_"$DATE".zip . -x "*.zip" "*.sha1" "*.md5"
+echo "[BUILD]: Creating changelog: MiRaGe_any_"$CODENAME"_KTU_"$DATE".txt ...";
 cd $SD
-git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/ChaOS_MiRaGe_"$CODENAME"_"$DATE"_"$REV"-"$2".txt
+git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/MiRaGe_any_"$CODENAME"_KTU_"$DATE".txt
     echo "[BUILD]: Done!...";
 
