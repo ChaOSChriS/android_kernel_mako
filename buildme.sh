@@ -6,6 +6,16 @@ DEFCONFIG="mako_config"
 NRJOBS=$(( $(nproc) * 2 ))
 TOOLCHAIN="$SD/ChaOS/toolchain/arm-cortex_a15-linux-gnueabihf-linaro_4.9.1-2014.07/bin"
 
+if [ -z "$1" ]; then
+  VERSION="KTU"
+ echo "[BUILD]: WARNING: Not called with Version(KTU/KTUO), defaulting to $VERSION!";
+ echo "[BUILD]: If this is not what you want, call this script with the Version(KTU/KTUO).";
+  echo "[BUILD]: Current Version: $VERSION";
+else
+  VERSION=$1;
+  echo "[BUILD]: Current Version: $VERSION";
+fi
+
 export ARCH=arm
 export CROSS_COMPILE=$TOOLCHAIN/arm-cortex_a15-linux-gnueabihf-
 echo "[BUILD]: Used Toolchain:  ";
@@ -22,11 +32,25 @@ echo "[BUILD]: Start of build: $DATE...";
 #build the kernel
 echo "[BUILD]: Cleaning kernel (make mrproper)...";
 make mrproper
-echo "[BUILD]: Using defconfig: $DEFCONFIG...";
 #make $DEFCONFIG
+if [ "$VERSION" = "KTU" ]; then
 cp $SD/arch/arm/configs/mako_config $SD/.config
 echo "[BUILD]: Changing CONFIG_LOCALVERSION to: -MiRaGe_any...";
 sed -i "/CONFIG_LOCALVERSION=\"/c\CONFIG_LOCALVERSION=\"-MiRaGe_any\"" .config
+elif [ "$VERSION" = "KTUO"  ]; then
+cp $SD/arch/arm/configs/mako_oc_config $SD/.config
+echo "[BUILD]: Changing CONFIG_LOCALVERSION to: -MiRaGe_any_OC...";
+sed -i "/CONFIG_LOCALVERSION=\"/c\CONFIG_LOCALVERSION=\"-MiRaGe_any_OC\"" .config
+else
+echo "[BUILD]:  You set a false Version! You choose: $VERSION instead of KTU or KTUO ";
+echo "[BUILD]:  Stop building... ";
+read
+echo "[BUILD]:  Press a key to exit ";
+exit
+fi
+
+
+
 
 ###CCACHE CONFIGURATION STARTS HERE, DO NOT MESS WITH IT!!!
 TOOLCHAIN_CCACHE="$TOOLCHAIN/../bin-ccache"
@@ -93,10 +117,10 @@ cp -R $SD/ChaOS/tools/* $SD/out/$CODENAME
 cd $SD/out/$CODENAME/
 
  #create zip and clean folder
-    echo "[BUILD]: Creating zip: MiRaGe_any_"$CODENAME"_KTU_"$DATE".zip ...";
-    zip -r MiRaGe_any_"$CODENAME"_KTU_"$DATE"_"$DATEE".zip . -x "*.zip" "*.sha1" "*.md5"
-echo "[BUILD]: Creating changelog: MiRaGe_any_"$CODENAME"_KTU_"$DATE".txt ...";
+    echo "[BUILD]: Creating zip: MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE".zip ...";
+    zip -r MiRaGe_any_"$CODENAME"_$VERSION"_"$DATE"_"$DATEE".zip . -x "*.zip" "*.sha1" "*.md5"
+echo "[BUILD]: Creating changelog: MiRaGe_any_"$CODENAME"_$VERSION"_"$DATE".txt ...";
 cd $SD
-git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/MiRaGe_any_"$CODENAME"_KTU_"$DATE"_"$DATEE".txt
+git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE"_"$DATEE".txt
     echo "[BUILD]: Done!...";
 
