@@ -83,7 +83,7 @@ find $SD/ -name \*.ko -exec cp '{}' $SD/out/$CODENAME/system/lib/modules/ ';'
 
 echo "[BUILD]: Cleaning out directory...";
 cd $SD/out/$CODENAME/
-find $SD/out/$CODENAME/* -maxdepth 0 ! -name '*.zip' ! -name '*.md5' ! -name '*.sha1' ! -name kernel ! -name modules ! -name out -exec rm -rf '{}' ';'
+find $SD/out/$CODENAME/* -maxdepth 0 ! -name '*.zip' !-name '*.txt' ! -name '*.md5' ! -name '*.sha1' ! -name kernel ! -name modules ! -name out -exec rm -rf '{}' ';'
 
 
 echo "[BUILD]: copy flashing tools to output";
