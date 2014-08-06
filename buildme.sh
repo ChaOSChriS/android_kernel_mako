@@ -16,6 +16,7 @@ REV=$(git log --pretty=format:'%h' -n 1)
 echo "[BUILD]: Saved current hash as revision: $REV...";
 #date of build
 DATE=$(date +%Y%m%d)
+DATEE=$(date +%H%M%S)
 echo "[BUILD]: Start of build: $DATE...";
 
 #build the kernel
@@ -93,9 +94,9 @@ cd $SD/out/$CODENAME/
 
  #create zip and clean folder
     echo "[BUILD]: Creating zip: MiRaGe_any_"$CODENAME"_KTU_"$DATE".zip ...";
-    zip -r MiRaGe_any_"$CODENAME"_KTU_"$DATE".zip . -x "*.zip" "*.sha1" "*.md5"
+    zip -r MiRaGe_any_"$CODENAME"_KTU_"$DATE"_"$DATEE".zip . -x "*.zip" "*.sha1" "*.md5"
 echo "[BUILD]: Creating changelog: MiRaGe_any_"$CODENAME"_KTU_"$DATE".txt ...";
 cd $SD
-git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/MiRaGe_any_"$CODENAME"_KTU_"$DATE".txt
+git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/MiRaGe_any_"$CODENAME"_KTU_"$DATE"_"$DATEE".txt
     echo "[BUILD]: Done!...";
 
