@@ -5,7 +5,8 @@ OUTDIR="$SD/out/$CODENAME/"
 CODENAME="mako"
 DEFCONFIG="mako_config"
 NRJOBS=$(( $(nproc) * 2 ))
-TOOLCHAIN="$SD/ChaOS/toolchain/arm-cortex_a15-linux-gnueabihf-linaro_4.9.1-2014.07/bin"
+#TOOLCHAIN="$SD/ChaOS/toolchain/arm-cortex_a15-linux-gnueabihf-linaro_4.9.1-2014.07/bin"
+TOOLCHAIN="$SD/ChaOS/toolchain/arm-cortex_a15-linux-gnueabihf-linaro_4.8.4-2014.08/bin"
 
 if [ -z "$1" ]; then
   VERSION="KTU"
