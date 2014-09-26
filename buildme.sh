@@ -101,28 +101,28 @@ echo "[BUILD]: creating output folders";
 
 mkdir -p $SD/out/$CODENAME
 mkdir -p $SD/out/$CODENAME/kernel
-mkdir -p $SD/out/$CODENAME/modules
+#mkdir -p $SD/out/$CODENAME/modules
 mkdir -p $OUTDIR
 #mkdir -p $SD/out/$CODENAME/META-INF/com/google/android
 
-echo "[BUILD]: moving kernel and modules to output";
+echo "[BUILD]: moving kernel to output";
 
 mv $SD/arch/arm/boot/zImage $SD/out/$CODENAME/kernel/zImage
-find $SD/ -name \*.ko -exec cp '{}' $SD/out/$CODENAME/system/lib/modules/ ';'
+#find $SD/ -name \*.ko -exec cp '{}' $SD/out/$CODENAME/system/lib/modules/ ';'
 
 echo "[BUILD]: Cleaning out directory...";
 cd $SD/out/$CODENAME/
-find $SD/out/$CODENAME/* -maxdepth 0 ! -name '*.zip' !-name '*.txt' ! -name '*.md5' ! -name '*.sha1' ! -name kernel ! -name modules ! -name out -exec rm -rf '{}' ';'
+find $SD/out/$CODENAME/* -maxdepth 0 ! -name '*.zip' ! -name '*.txt' ! -name '*.md5' ! -name '*.sha1' ! -name kernel ! -name modules ! -name out ! -name standard ! -name overclocked -exec rm -rf '{}' ';'
 
 
 echo "[BUILD]: copy flashing tools to output";
 
 cp -R $SD/ChaOS/tools/* $SD/out/$CODENAME
-cd $OUTDIR
+cd $SD/out/$CODENAME
 
  #create zip and clean folder
     echo "[BUILD]: Creating zip: MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE".zip ...";
-    zip -r MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE"_"$DATEE".zip . -x "*.zip" "*.sha1" "*.md5"
+    zip -r $OUTDIR/MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE"_"$DATEE".zip . -x "/standard*" "/overclocked*" "*.zip" "*.sha1" "*.md5"
 echo "[BUILD]: Creating changelog: MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE".txt ...";
 cd $SD
 git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $OUTDIR/MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE"_"$DATEE".txt
