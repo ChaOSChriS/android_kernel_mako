@@ -1,6 +1,7 @@
 #!/bin/bash
 #sourcedir
 SD="$(pwd)"
+OUTDIR="$SD/out/$CODENAME/"
 CODENAME="mako"
 DEFCONFIG="mako_config"
 NRJOBS=$(( $(nproc) * 2 ))
@@ -37,12 +38,14 @@ if [ "$VERSION" = "KTU" ]; then
 cp $SD/arch/arm/configs/mako_config $SD/.config
 echo "[BUILD]: Changing CONFIG_LOCALVERSION to: -MiRaGe_any...";
 sed -i "/CONFIG_LOCALVERSION=\"/c\CONFIG_LOCALVERSION=\"-MiRaGe_any\"" .config
+OUTDIR="$SD/out/$CODENAME/standard/";
 elif [ "$VERSION" = "KTUO"  ]; then
 cp $SD/arch/arm/configs/mako_oc_config $SD/.config
 echo "[BUILD]: Changing CONFIG_LOCALVERSION to: -MiRaGe_any_OC...";
 sed -i "/CONFIG_LOCALVERSION=\"/c\CONFIG_LOCALVERSION=\"-MiRaGe_any_OC\"" .config
+OUTDIR="$SD/out/$CODENAME/overclocked/";
 else
-echo "[BUILD]:  You set a false Version! You choose: $VERSION instead of KTU or KTUO ";
+echo "[BUILD]:  You set a wrong Version! You choose: $VERSION instead of KTU or KTUO ";
 echo "[BUILD]:  Stop building... ";
 read
 echo "[BUILD]:  Press a key to exit ";
@@ -84,7 +87,7 @@ cd $SD
 ###CCACHE CONFIGURATION ENDS HERE, DO NOT MESS WITH IT!!!
 
 echo "[BUILD]: Bulding the kernel...";
-time make zImage modules -j$NRJOBS || { return 1; }
+time make zImage  -j$NRJOBS || { return 1; }
 
  if [ -f "$SD/arch/arm/boot/zImage" ];
     then
@@ -99,6 +102,7 @@ echo "[BUILD]: creating output folders";
 mkdir -p $SD/out/$CODENAME
 mkdir -p $SD/out/$CODENAME/kernel
 mkdir -p $SD/out/$CODENAME/modules
+mkdir -p $OUTDIR
 #mkdir -p $SD/out/$CODENAME/META-INF/com/google/android
 
 echo "[BUILD]: moving kernel and modules to output";
@@ -114,13 +118,13 @@ find $SD/out/$CODENAME/* -maxdepth 0 ! -name '*.zip' !-name '*.txt' ! -name '*.m
 echo "[BUILD]: copy flashing tools to output";
 
 cp -R $SD/ChaOS/tools/* $SD/out/$CODENAME
-cd $SD/out/$CODENAME/
+cd $OUTDIR
 
  #create zip and clean folder
     echo "[BUILD]: Creating zip: MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE".zip ...";
     zip -r MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE"_"$DATEE".zip . -x "*.zip" "*.sha1" "*.md5"
 echo "[BUILD]: Creating changelog: MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE".txt ...";
 cd $SD
-git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $SD/out/$CODENAME/MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE"_"$DATEE".txt
+git log --pretty=format:'%h (%an) : %s' --graph $REV^..HEAD > $OUTDIR/MiRaGe_any_"$CODENAME"_"$VERSION"_"$DATE"_"$DATEE".txt
     echo "[BUILD]: Done!...";
 
